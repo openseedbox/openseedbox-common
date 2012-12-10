@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
-
 import play.mvc.Http.Request;
 import play.mvc.Http.Response;
 import play.mvc.results.RenderJson;
@@ -30,7 +29,7 @@ public class GenericResult extends Result {
 	public void apply(Request request, Response response) {
 		String ext = request.params.get("ext");
 		if (ext == null) {
-			ext = "html";
+			ext = "json";
 		}
 		if (_res == null) {
 			_res = (Object) "null";

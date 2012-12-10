@@ -9,6 +9,6 @@ require:
 repositories:
     - local:
        type: local 
-       artifact: ${application.path}/extra-libs/[module]-[revision].jar
+       artifact: ${application.path}/extra-lib/[module]-[revision].jar
        contains:
           - local

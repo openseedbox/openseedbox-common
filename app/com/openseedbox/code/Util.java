@@ -76,7 +76,7 @@ public class Util {
 			SelectItem si = new SelectItem(items.get(s), s, false);
 			si.name = items.get(s);
 			ret.add(si);
-		}
+		}		
 		return ret;		
 	}
 	/*
@@ -154,7 +154,10 @@ public class Util {
 	public static String executeCommand(String command) {
 		try {
 			Runtime r = Runtime.getRuntime();
-			Process p = r.exec(command);
+			String[] cmd = {
+				"/bin/sh", "-c", command
+			};
+			Process p = r.exec(cmd);
 			p.waitFor();
 			BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			String line;

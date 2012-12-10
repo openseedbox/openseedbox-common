@@ -70,11 +70,11 @@ public abstract class BaseController extends Controller {
 	}
 
 	protected static void writeLine(String s) {
-		write(s + "\n");
+		write(s + "<br />");
 	}
 
 	protected static void writeLine(String s, Object... args) {
-		write(s + "\n", args);
+		write(s + "<br />", args);
 	}
 
 	@Catch(Exception.class)
