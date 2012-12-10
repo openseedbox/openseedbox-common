@@ -1,0 +1,9 @@
+tmp/
+nbproject/
+logs/
+eclipse/
+modules/
+lib/
+precompiled/
+server.pid
+build.xml

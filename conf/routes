@@ -1,0 +1,6 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+
+
+# Deliberately no routes, this project is supposed to be imported as a module
+# into other projects

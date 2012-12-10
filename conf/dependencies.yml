@@ -1,0 +1,14 @@
+# openseedbox-common dependencies
+
+require:
+    - play 1.2.5
+    - local -> htmlcompressor 1.5.3
+    - local -> joda-time 2.1
+    - local -> jsch 0.1.49
+    
+repositories:
+    - local:
+       type: local 
+       artifact: ${application.path}/extra-libs/[module]-[revision].jar
+       contains:
+          - local
