@@ -7,6 +7,12 @@ package com.openseedbox.backend;
 public interface IFile {
 	
 	/**
+	 * Returns the ID that the backend uses to identify the file by
+	 * @return The file ID
+	 */
+	public String getId();	
+	
+	/**
 	 * The name of the file, eg MyVideo.mkv
 	 * @return The file name
 	 */
@@ -26,6 +32,11 @@ public interface IFile {
 	 * @return Whether or not the file is wanted
 	 */
 	public boolean isWanted();
+	
+	/**	 
+	 * @return True if the file has finished downloading, false if it hasn't
+	 */
+	public boolean isCompleted();
 	
 	/**
 	 * Get the download progress of this file, in bytes
@@ -48,5 +59,11 @@ public interface IFile {
 	 * @return The priority of this file
 	 */
 	public int getPriority();
+	
+	/**
+	 * Gets the download link to this file
+	 * @return A download link that the user can paste into their browser and have work
+	 */
+	public String getDownloadLink();
 	
 }

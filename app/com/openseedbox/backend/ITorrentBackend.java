@@ -105,14 +105,14 @@ public interface ITorrentBackend {
 	 * @param hash The torrent info_hash
 	 * @return An ITorrent instance representing the specified torrent
 	 */
-	public ITorrent torrentStatus(String hash);
+	public ITorrent getTorrentStatus(String hash);
 	
 	/**
 	 * Gets the status several torrents based on a list of info_hashes
 	 * @param hashes The list of info_hashes
 	 * @return A List of ITorrent objects representing the specified torrents
 	 */
-	public List<ITorrent> torrentStatus(List<String> hashes);	
+	public List<ITorrent> getTorrentStatus(List<String> hashes);	
 	
 	/**
 	 * Gets peer information for the specified torrent
@@ -156,6 +156,15 @@ public interface ITorrentBackend {
 	 * @return A Map, the key is a torrent hash and the value is the list of files for that torrent
 	 */
 	public Map<String, List<IFile>> getTorrentFiles(List<String> hashes);
+	
+	
+	/**
+	 * Modifys the torrents files (update priority, wanted)
+	 * @param hash The hash of the torrent to update files for
+	 * @param files The files to update. Note: The IFile objects in this list should
+	 * be supplied with their id, wanted and priority fields populated at the least
+	 */
+	public void modifyTorrentFiles(String hash, List<IFile> files);
 	
 	/**
 	 * Modify per-torrent settings

@@ -30,6 +30,11 @@ public interface ITorrent {
 	 */
 	public double getMetadataPercentComplete();
 	
+	/**	 
+	 * @return True if the torrent is a magnet and its metadata is still downloading, false if not
+	 */
+	public boolean isMetadataDownloading();
+	
 	/**
 	 * Gets the percentage completed of this torrent
 	 * @return The percent complete, between 0 and 100
