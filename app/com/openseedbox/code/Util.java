@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URLDecoder;
@@ -13,11 +14,13 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import net.sf.oval.internal.util.ReflectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import play.Logger;
 import play.Play;
 
 public class Util {
@@ -78,6 +81,20 @@ public class Util {
 			ret.add(si);
 		}		
 		return ret;		
+	}
+	
+	public static <T> List<ISelectListItem> toSelectItems(List<T> collection, String keyField, String nameField) {
+		List<ISelectListItem> ret = new ArrayList<ISelectListItem>();		
+		for (T obj : collection) {			
+			Field key = ReflectionUtils.getFieldRecursive(obj.getClass(), keyField);
+			Field name = ReflectionUtils.getFieldRecursive(obj.getClass(), nameField);
+			SelectItem si = new SelectItem(					  
+					  ReflectionUtils.getFieldValue(name, obj).toString(),
+					 ReflectionUtils.getFieldValue(key, obj).toString(),					  
+					  false);
+			ret.add(si);						
+		}
+		return ret;
 	}
 	/*
 	public static DateTime getLocalDate(Date systemDate, User u) {
