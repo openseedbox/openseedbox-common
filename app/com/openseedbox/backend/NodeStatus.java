@@ -11,15 +11,15 @@ import com.google.gson.annotations.SerializedName;
 public class NodeStatus implements INodeStatus {
 
 	private String uptime;
-	@SerializedName("free-space-bytes") private long freeSpaceBytes;
-	@SerializedName("total-space-bytes") private long totalSpaceBytes;		
-	@SerializedName("used-space-bytes") private long usedSpaceBytes;
-	@SerializedName("base-directory") private String baseDirectory;
-	@SerializedName("is-base-directory-writable") private boolean baseDirectoryWritable;
-	@SerializedName("backend-name") private String backendName;
-	@SerializedName("backend-version") private String backendVersion;
-	@SerializedName("is-backend-running") private boolean backendRunning;
-	@SerializedName("is-backend-installed") private boolean backendInstalled;
+	private long freeSpaceBytes;
+	private long totalSpaceBytes;		
+	private long usedSpaceBytes;
+	private String baseDirectory;
+	private boolean baseDirectoryWritable;
+	private String backendName;
+	private String backendVersion;
+	private boolean backendRunning;
+	private boolean backendInstalled;
 
 	public NodeStatus(String uptime, long freeSpace, long totalSpace,
 			  String baseDir, boolean baseDirWritable, ITorrentBackend backend) {
@@ -79,4 +79,43 @@ public class NodeStatus implements INodeStatus {
 		return backendRunning;
 	}
 
+	public void setUptime(String uptime) {
+		this.uptime = uptime;
+	}
+
+	public void setFreeSpaceBytes(long freeSpaceBytes) {
+		this.freeSpaceBytes = freeSpaceBytes;
+	}
+
+	public void setTotalSpaceBytes(long totalSpaceBytes) {
+		this.totalSpaceBytes = totalSpaceBytes;
+	}
+
+	public void setUsedSpaceBytes(long usedSpaceBytes) {
+		this.usedSpaceBytes = usedSpaceBytes;
+	}
+
+	public void setBaseDirectory(String baseDirectory) {
+		this.baseDirectory = baseDirectory;
+	}
+
+	public void setBaseDirectoryWritable(boolean baseDirectoryWritable) {
+		this.baseDirectoryWritable = baseDirectoryWritable;
+	}
+
+	public void setBackendName(String backendName) {
+		this.backendName = backendName;
+	}
+
+	public void setBackendVersion(String backendVersion) {
+		this.backendVersion = backendVersion;
+	}
+
+	public void setBackendRunning(boolean backendRunning) {
+		this.backendRunning = backendRunning;
+	}
+
+	public void setBackendInstalled(boolean backendInstalled) {
+		this.backendInstalled = backendInstalled;
+	}
 }

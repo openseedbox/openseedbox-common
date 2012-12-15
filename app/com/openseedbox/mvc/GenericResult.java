@@ -2,6 +2,7 @@ package com.openseedbox.mvc;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.openseedbox.gson.AccessorBasedTypeAdapterFactory;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +50,7 @@ public class GenericResult extends Result {
 		if (ext.equals("json")) {
 			Gson gson = new GsonBuilder()
 				.excludeFieldsWithModifiers(Modifier.TRANSIENT)  
+				.registerTypeAdapterFactory(new AccessorBasedTypeAdapterFactory())
 				.create();			
 			new RenderJson(gson.toJson(_res)).apply(request, response);
 		} else if (ext.equals("xml")) {

@@ -1,6 +1,8 @@
 package com.openseedbox.code;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.openseedbox.gson.AccessorBasedTypeAdapterFactory;
 import com.openseedbox.mvc.ISelectListItem;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +22,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import play.Logger;
 import play.Play;
 
 public class Util {
@@ -137,12 +138,11 @@ public class Util {
 		return s.replaceAll("[^\\d.]", "");
 	}
 	
-	public static <T extends Object> T fromJson(String json, Class<T> c) {
-		return new Gson().fromJson(json, c);
-	}
-	
-	public static String toJson(Object o) {
-		return new Gson().toJson(o);
+	public static Gson getGson() {
+		return new GsonBuilder()
+				  .registerTypeAdapterFactory(new AccessorBasedTypeAdapterFactory())
+				  .serializeNulls()
+				  .create();
 	}
 	
 	public static Map<String, Object> convertToMap(Object[] data) {

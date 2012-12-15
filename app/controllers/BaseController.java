@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import play.Play;
 import play.Play.Mode;
-import play.data.validation.Validation;
 import play.mvc.Catch;
 import play.mvc.Controller;
 import play.templates.Template;
@@ -15,12 +14,8 @@ import play.templates.TemplateLoader;
 
 public abstract class BaseController extends Controller {
 	
-	protected static void addGeneralError(Exception ex) {
-		Validation.addError("general", ex.getMessage());
-	}
-	
 	protected static void setGeneralErrorMessage(String message) {
-		addGeneralError(new MessageException(message));
+		flash.put("error", message);
 	}
 
 	protected static void setGeneralMessage(String message) {

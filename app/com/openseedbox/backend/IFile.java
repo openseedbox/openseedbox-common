@@ -1,21 +1,27 @@
 package com.openseedbox.backend;
 
+import com.openseedbox.gson.SerializedAccessorName;
+import com.openseedbox.gson.UseAccessor;
+
 /**
  * Represents a file in a torrent
  * @author Erin Drummond
  */
+@UseAccessor
 public interface IFile {
 	
 	/**
 	 * Returns the ID that the backend uses to identify the file by
 	 * @return The file ID
 	 */
+	@SerializedAccessorName("id")
 	public String getId();	
 	
 	/**
 	 * The name of the file, eg MyVideo.mkv
 	 * @return The file name
 	 */
+	@SerializedAccessorName("name")
 	public String getName();
 	
 	/**
@@ -23,6 +29,7 @@ public interface IFile {
 	 * eg /videos/mkv/MyVideo.mkv
 	 * @return The file full path
 	 */
+	@SerializedAccessorName("full-path")
 	public String getFullPath();
 	
 	/**
@@ -31,23 +38,27 @@ public interface IFile {
 	 * deselected it.
 	 * @return Whether or not the file is wanted
 	 */
+	@SerializedAccessorName("wanted")
 	public boolean isWanted();
 	
 	/**	 
 	 * @return True if the file has finished downloading, false if it hasn't
 	 */
+	@SerializedAccessorName("is-completed")
 	public boolean isCompleted();
 	
 	/**
 	 * Get the download progress of this file, in bytes
 	 * @return The bytes downloaded
 	 */
+	@SerializedAccessorName("completed-bytes")
 	public long getBytesCompleted();
 	
 	/**
 	 * Get the total size of this file, in bytes
 	 * @return The total size of the file
 	 */
+	@SerializedAccessorName("file-size-bytes")
 	public long getFileSizeBytes();
 	
 	/**
@@ -58,12 +69,14 @@ public interface IFile {
 	 *   1 = High Priority
 	 * @return The priority of this file
 	 */
+	@SerializedAccessorName("priority")
 	public int getPriority();
 	
 	/**
 	 * Gets the download link to this file
 	 * @return A download link that the user can paste into their browser and have work
 	 */
+	@SerializedAccessorName("download-link")
 	public String getDownloadLink();
 	
 }
