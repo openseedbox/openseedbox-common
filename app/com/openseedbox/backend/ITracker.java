@@ -22,6 +22,18 @@ public interface ITracker {
 	@SerializedAccessorName("announce-url")
 	public String getAnnounceUrl();
 	
+	/**	 
+	 * @return What happened last time an announce was attempted (did it work or was there an error contacting the tracker?)
+	 */	
+	@SerializedAccessorName("last-announce-result")
+	public String getLastAnnounceResult();
+	
+	/**	 
+	 * @return True if the last announce was successful, false if it wasnt
+	 */
+	@SerializedAccessorName("last-announce-successful")
+	public boolean isLastAnnounceSuccessful();
+	
 	/**
 	 * @return The number of leechers downloading this torrent
 	 */

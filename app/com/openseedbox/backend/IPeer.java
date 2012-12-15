@@ -18,6 +18,13 @@ public interface IPeer {
 	public String getClientName();
 	
 	/**
+	 * Get the IP address of the peer
+	 * @return The IP address of the peer
+	 */
+	@SerializedAccessorName("ip-address")
+	public String getIpAddress();
+	
+	/**
 	 * @return True if we are downloading from this peer 
 	 */
 	@SerializedAccessorName("downloading-from")

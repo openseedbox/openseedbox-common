@@ -62,6 +62,13 @@ public interface IFile {
 	public long getFileSizeBytes();
 	
 	/**
+	 * Gets the percent complete of the file
+	 * @return The percent, as a number between 0 and 1
+	 */
+	@SerializedAccessorName("percent-complete")
+	public double getPercentComplete();
+	
+	/**
 	 * Users can set the download priority of a file. Higher numbers will be downloaded
 	 * first. This method should return -1, 0 or 1 where:
 	 *  -1 = Low Priority
