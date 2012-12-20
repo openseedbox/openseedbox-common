@@ -11,7 +11,10 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -38,7 +41,23 @@ public class Util {
 		}
 	}	
 	
-	public static String getBestRate(long rateInBytes) {
+	public static String URLEncode(String s) {
+		try {
+			return URLEncoder.encode(s, "UTF-8");
+		} catch (UnsupportedEncodingException ex) {
+			return s;
+		}
+	}
+	
+	public static String URLDecode(String s) {
+		try {
+			return URLDecoder.decode(s, "UTF-8");
+		} catch (UnsupportedEncodingException ex) {
+			return s;
+		}
+	}	
+	
+	public static String getBestRate(long rateInBytes) {		
 		return FileUtils.byteCountToDisplaySize(rateInBytes);
 	}
 	
@@ -109,7 +128,8 @@ public class Util {
 		String query = "";
 		if (urlParts.length > 0) {
 			query = urlParts[0];
-		} else if (urlParts.length > 1) {
+		}
+		if (urlParts.length > 1) {
 			query = urlParts[1];
 		}
 		if (!query.equals("")) {

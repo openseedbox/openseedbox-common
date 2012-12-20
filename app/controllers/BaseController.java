@@ -1,7 +1,7 @@
 package controllers;
 
-import com.openseedbox.mvc.GenericResult;
 import com.openseedbox.code.MessageException;
+import com.openseedbox.mvc.GenericResult;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -37,7 +37,10 @@ public abstract class BaseController extends Controller {
 	protected static String renderToString(String template, Map<String, Object> args) {
 		Template t = TemplateLoader.load(template);
 		try {
-			return t.render(args);
+			if (args != null) {
+				renderArgs.data.putAll(args);	
+			}			
+			return t.render(renderArgs.data);
 		} catch (Exception ex) {
 			return ExceptionUtils.getStackTrace(ex);
 		}

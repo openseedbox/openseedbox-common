@@ -5,6 +5,7 @@ require:
     - local -> htmlcompressor 1.5.3
     - local -> joda-time 2.1
     - local -> jsch 0.1.49    
+    - local -> ttorrent 1.1.4
     
 repositories:
     - local:

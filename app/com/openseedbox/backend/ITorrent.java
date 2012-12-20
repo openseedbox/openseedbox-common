@@ -44,6 +44,12 @@ public interface ITorrent {
 	@SerializedAccessorName("is-paused") public boolean isPaused();
 	
 	/**
+	 * Checks to see if the torrent is complete (ie, all data downloaded)
+	 * @return True if all data downloaded, false if not
+	 */
+	@SerializedAccessorName("is-complete") public boolean isComplete();
+	
+	/**
 	 * Gets the percent complete of the metadata (eg, if the torrent was being downloaded from a magnet)
 	 * Should return 100 if metdata has finished downloading (ie, the backend has the whole torrent)
 	 * @return The percent complete of the metadata, between 0 and 100
@@ -134,5 +140,12 @@ public interface ITorrent {
 	 * @return The list of trackers
 	 */
 	@SerializedAccessorName("trackers") public List<ITracker> getTrackers();
+	
+	/**
+	 * Gets a download link that the user can paste into their browser and
+	 * have it download the contents of the torrent, as a zip
+	 * @return The zip download link
+	 */
+	@SerializedAccessorName("zip-download-link") public String getZipDownloadLink();
 	
 }

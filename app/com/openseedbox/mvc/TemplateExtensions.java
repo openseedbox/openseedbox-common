@@ -32,6 +32,21 @@ public class TemplateExtensions extends JavaExtensions {
 	}
 	
 	/**
+	 * Trims the specified string to the specified length if its larger
+	 * or leave it along if its not
+	 * @param s The string to trim
+	 * @param length The length to trim to
+	 * @return The trimmed string
+	 */
+	public static String trimTo(String s, int length) {
+		if (s.length() > length) {
+			s = s.substring(0, length - "...".length());
+			s += "...";
+		}
+		return s;
+	}
+	
+	/**
 	 * Returns the url for the specified asset (prepends assets.prefix from the configuration file)
 	 * @param s The asset url
 	 * @return The final url
