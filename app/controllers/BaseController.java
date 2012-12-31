@@ -5,6 +5,7 @@ import com.openseedbox.mvc.GenericResult;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.h2.util.StringUtils;
 import play.Play;
 import play.Play.Mode;
 import play.mvc.Catch;
@@ -78,7 +79,7 @@ public abstract class BaseController extends Controller {
 	@Catch(Exception.class)
 	protected static void onException(Exception ex) throws Exception {
 		if (ex instanceof MessageException) {
-			if (params.get("ext") != null && params.get("ext").equals("json")) {
+			if (!StringUtils.equals(params.get("ext"), "html")) {
 				resultError(ex.getMessage());
 			}
 			result(ex.getMessage());
