@@ -4,10 +4,14 @@ import play.jobs.Job;
 
 public abstract class GenericJob extends Job {
 
-	public abstract Object doGenericJob();
+	protected abstract Object doGenericJob() throws Exception;
 
 	@Override
-	public Object doJobWithResult() {
+	public Object doJobWithResult() throws Exception {
+		return runJob();
+	}
+	
+	protected GenericJobResult runJob() throws Exception {
 		GenericJobResult res = new GenericJobResult();
 		try {
 			res.setResult(doGenericJob());
@@ -16,5 +20,6 @@ public abstract class GenericJob extends Job {
 		}
 		return res;
 	}
+		
 
 }

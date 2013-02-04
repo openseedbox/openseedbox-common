@@ -4,6 +4,7 @@ import groovy.lang.Closure;
 import java.io.PrintWriter;
 import java.util.Map;
 import org.apache.commons.lang.StringUtils;
+import play.Play;
 import play.templates.FastTags;
 import play.templates.GroovyTemplate.ExecutableTemplate;
 
@@ -22,8 +23,8 @@ public class AssetFastTag extends FastTags {
 	private static String getAssetUrl(String url) {
 		if (StringUtils.isEmpty(url)) {
 			return "empty url";
-		}
-		String assetsPrefix = play.Play.configuration.getProperty("assets.prefix", "/public/");
+		}		
+		String assetsPrefix = Play.configuration.getProperty("openseedbox.assets.prefix", "/public");
 		if (!assetsPrefix.endsWith("/")) {
 			assetsPrefix += "/";
 		}
