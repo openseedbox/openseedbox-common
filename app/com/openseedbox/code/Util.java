@@ -70,7 +70,7 @@ public class Util {
 		} else if (size.divide(ONE_GB).compareTo(BigInteger.ZERO) > 0) {
 			displaySize = getSignificantFigures(decimalSize.divide(new BigDecimal(ONE_GB)).doubleValue(), 2) + " GB";
 		} else if (size.divide(ONE_MB).compareTo(BigInteger.ZERO) > 0) {
-			displaySize = getSignificantFigures(decimalSize.divide(new BigDecimal(ONE_MB)).doubleValue(), 0) + " MB";
+			displaySize = getSignificantFigures(decimalSize.divide(new BigDecimal(ONE_MB)).doubleValue(), 1) + " MB";
 		} else if (size.divide(ONE_KB).compareTo(BigInteger.ZERO) > 0) {
 			displaySize = getSignificantFigures(decimalSize.divide(new BigDecimal(ONE_KB)).doubleValue(), 0) + " KB";
 		} else {
