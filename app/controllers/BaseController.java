@@ -27,10 +27,6 @@ public abstract class BaseController extends Controller {
 		flash.put("warning", message);
 	}
 
-	protected static String getServerPath() {
-		return String.format("http://%s", request.host);
-	}
-
 	protected static String renderToString(String template) {
 		return renderToString(template, new HashMap<String, Object>());
 	}
