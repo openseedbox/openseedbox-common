@@ -26,6 +26,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import play.Play;
+import play.templates.JavaExtensions;
 
 public class Util {
 
@@ -41,12 +42,8 @@ public class Util {
 		}
 	}
 
-	public static String URLEncode(String s) {
-		try {
-			return URLEncoder.encode(s, "UTF-8");
-		} catch (UnsupportedEncodingException ex) {
-			return s;
-		}
+	public static String URLEncode(String s) {		
+		return JavaExtensions.urlEncode(s);
 	}
 
 	public static String URLDecode(String s) {
