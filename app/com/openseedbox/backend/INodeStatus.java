@@ -1,6 +1,5 @@
 package com.openseedbox.backend;
 
-import com.google.gson.annotations.SerializedName;
 import com.openseedbox.gson.SerializedAccessorName;
 import com.openseedbox.gson.UseAccessor;
 

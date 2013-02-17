@@ -1,6 +1,6 @@
 package com.openseedbox.backend;
 
-import com.google.gson.annotations.SerializedName;
+import siena.embed.EmbeddedMap;
 
 /**
  * Represents the status of a node.
@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * and the object is the same
  * @author Erin Drummond
  */
+@EmbeddedMap
 public class NodeStatus implements INodeStatus {
 
 	private String uptime;
@@ -20,6 +21,19 @@ public class NodeStatus implements INodeStatus {
 	private String backendVersion;
 	private boolean backendRunning;
 	private boolean backendInstalled;
+	
+	public NodeStatus(INodeStatus ins) {
+		this.uptime = ins.getUptime();
+		this.freeSpaceBytes = ins.getFreeSpaceBytes();
+		this.totalSpaceBytes = ins.getTotalSpaceBytes();
+		this.usedSpaceBytes = ins.getUsedSpaceBytes();
+		this.baseDirectory = ins.getBaseDirectory();
+		this.baseDirectoryWritable = ins.isBaseDirectoryWritable();
+		this.backendName = ins.getBackendName();
+		this.backendVersion = ins.getBackendVersion();
+		this.backendRunning = ins.isBackendRunning();
+		this.backendInstalled = ins.isBackendInstalled();		
+	}
 
 	public NodeStatus(String uptime, long freeSpace, long totalSpace,
 			  String baseDir, boolean baseDirWritable, ITorrentBackend backend) {
