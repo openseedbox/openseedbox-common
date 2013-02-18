@@ -51,6 +51,7 @@ public class GenericResult extends Result {
 			Gson gson = new GsonBuilder()
 				.excludeFieldsWithModifiers(Modifier.TRANSIENT)  
 				.registerTypeAdapterFactory(new AccessorBasedTypeAdapterFactory())
+				.serializeSpecialFloatingPointValues()
 				.create();			
 			new RenderJson(gson.toJson(_res)).apply(request, response);
 		} else if (ext.equals("xml")) {
