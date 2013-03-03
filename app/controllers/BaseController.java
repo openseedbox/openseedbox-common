@@ -8,12 +8,25 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.h2.util.StringUtils;
 import play.Play;
 import play.Play.Mode;
+import play.mvc.Before;
 import play.mvc.Catch;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.templates.Template;
 import play.templates.TemplateLoader;
 
 public abstract class BaseController extends Controller {
+	
+	@Before
+	public static void checkRequestSecure() {
+		//this is required so Play! knows if its in front of https-secured nginx or not
+		Http.Header secure = request.headers.get("x-forwarded-proto");
+		if (secure != null) {
+			if (secure.value().toLowerCase().equals("https")) {
+				request.secure = true;
+			}
+		}
+	}	
 	
 	protected static void setGeneralErrorMessage(String message) {
 		flash.put("error", message);

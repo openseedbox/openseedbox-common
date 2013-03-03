@@ -13,7 +13,10 @@ import com.openseedbox.code.Util;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import play.Logger;
 
@@ -24,8 +27,11 @@ public class AccessorBasedTypeAdapterFactory implements TypeAdapterFactory {
 		if (t.isAnnotationPresent(UseAccessor.class)) {
 			return (TypeAdapter<T>) new AccessorBasedTypeAdaptor(gson, t, t);
 		} else {
-			//check interfaces
+			//check interfaces			
 			Class[] interfaces = t.getInterfaces();
+			if (interfaces.length == 0) {
+				interfaces = t.getSuperclass().getInterfaces();
+			}
 			for (Class i : interfaces) {
 				if (i.isAnnotationPresent(UseAccessor.class)) {
 					return (TypeAdapter<T>) new AccessorBasedTypeAdaptor(gson, i, t);
@@ -50,8 +56,26 @@ public class AccessorBasedTypeAdapterFactory implements TypeAdapterFactory {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void write(JsonWriter out, T value) throws IOException {
-			out.beginObject();			
-			for (Method method : value.getClass().getMethods()) {		
+			out.beginObject();	
+			List<Method> allMethods = new ArrayList<Method>();
+			
+			//methods of this class
+			allMethods.addAll(Arrays.asList(value.getClass().getMethods()));
+			
+			//methods of this class's superclass
+			allMethods.addAll(Arrays.asList(value.getClass().getSuperclass().getMethods()));
+			
+			//methods of this class's interfaces
+			for (Class i : value.getClass().getInterfaces()) {
+				allMethods.addAll(Arrays.asList(i.getMethods()));
+			}
+			
+			//methods of this class's superclass's interfaces
+			for (Class i : value.getClass().getSuperclass().getInterfaces()) {
+				allMethods.addAll(Arrays.asList(i.getMethods()));
+			}			
+			
+			for (Method method : allMethods) {		
 				try {
 					String name = getJsonFieldName(method);
 					if (name == null) { continue; }

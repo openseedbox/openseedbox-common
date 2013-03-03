@@ -69,6 +69,20 @@ public interface IFile {
 	public double getPercentComplete();
 	
 	/**
+	 * Gets the file size as human readable	 
+	 * @return The size, eg "45 MB" or "8.7 GB"
+	 */
+	@SerializedAccessorName("nice-file-size")
+	public String getNiceFileSize();
+	
+	/**
+	 * Gets the percent complete of the file as human readable
+	 * @return The percent complete, eg "47.23%"
+	 */
+	@SerializedAccessorName("nice-percent-complete")
+	public String getNicePercentComplete();
+	
+	/**
 	 * Users can set the download priority of a file. Higher numbers will be downloaded
 	 * first. This method should return -1, 0 or 1 where:
 	 *  -1 = Low Priority

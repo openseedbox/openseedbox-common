@@ -48,12 +48,8 @@ public class GenericResult extends Result {
 			_res = m;
 		}
 		if (ext.equals("json")) {
-			Gson gson = new GsonBuilder()
-				.excludeFieldsWithModifiers(Modifier.TRANSIENT)  
-				.registerTypeAdapterFactory(new AccessorBasedTypeAdapterFactory())
-				.serializeSpecialFloatingPointValues()
-				.create();			
-			new RenderJson(gson.toJson(_res)).apply(request, response);
+		
+			new RenderJson(getGson().toJson(_res)).apply(request, response);
 		} else if (ext.equals("xml")) {
 			new RenderXml(_res).apply(request, response);
 		} else if (ext.equals("jsonp")) {
@@ -62,7 +58,7 @@ public class GenericResult extends Result {
 				callback = "callback";
 			}
 			response.print(String.format("%s(", callback));
-			new RenderJson(_res).apply(request, response);
+			new RenderJson(getGson().toJson(_res)).apply(request, response);
 			response.print(")");
 			response.contentType = "text/javascript";
 		} else if (ext.equals("html")) {
@@ -70,5 +66,13 @@ public class GenericResult extends Result {
 		} else {
 			response.print("Unknown response type: " + ext);
 		}
+	}
+	
+	private Gson getGson() {
+		return new GsonBuilder()
+			.excludeFieldsWithModifiers(Modifier.TRANSIENT)  
+			.registerTypeAdapterFactory(new AccessorBasedTypeAdapterFactory())
+			.serializeSpecialFloatingPointValues()
+			.create();			
 	}
 }

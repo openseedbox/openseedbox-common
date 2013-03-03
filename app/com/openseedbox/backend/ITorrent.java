@@ -148,4 +148,9 @@ public interface ITorrent {
 	 */
 	@SerializedAccessorName("zip-download-link") public String getZipDownloadLink();
 	
+	/**
+	 * Gets the ratio of uploaded bytes / downloaded bytes
+	 * @return The ratio (literally, uploadedBytes / downloadedBytes) as a double
+	 */
+	@SerializedAccessorName("ratio") public double getRatio();
 }
