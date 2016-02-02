@@ -7,6 +7,8 @@ require:
     - local -> jsch 0.1.49    
     - local -> ttorrent 1.1.4
     - play -> siena 2.0.7
+    - commons-codec -> commons-codec 1.4:
+        force: true
     - com.ning -> async-http-client 1.7.10:
         force: true
     
