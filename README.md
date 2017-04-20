@@ -1,3 +1,3 @@
-Common code for [openseedbox](https://github.com/erindru/openseedbox) and [openseedbox-server](https://github.com/erindru/openseedbox-server).
+Common code for [openseedbox](https://github.com/openseedbox/openseedbox) and [openseedbox-server](https://github.com/openseedbox/openseedbox-server).
 
-See: https://github.com/erindru/openseedbox
+See: https://github.com/openseedbox/openseedbox
