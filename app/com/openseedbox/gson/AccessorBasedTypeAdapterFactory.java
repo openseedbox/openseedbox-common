@@ -29,7 +29,7 @@ public class AccessorBasedTypeAdapterFactory implements TypeAdapterFactory {
 		} else {
 			//check interfaces			
 			Class[] interfaces = t.getInterfaces();
-			if (interfaces.length == 0) {
+			if (interfaces.length == 0 && t.getSuperclass() != null) {
 				interfaces = t.getSuperclass().getInterfaces();
 			}
 			for (Class i : interfaces) {
