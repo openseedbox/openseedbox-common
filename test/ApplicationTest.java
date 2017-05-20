@@ -4,6 +4,7 @@ import play.mvc.Http.*;
 
 public class ApplicationTest extends FunctionalTest {
 
+    @Ignore("OpenSeedbox and OpenSeedbox Server indexpage behaves differently.")
     @Test
     public void testThatIndexPageWorks() {
         Response response = GET("/");
