@@ -1,14 +1,11 @@
 package com.openseedbox.backend;
 
-import siena.embed.EmbeddedMap;
-
 /**
  * Represents the status of a node.
  * Is here because openseedbox-server has a /status call and openseedbox-client consumes it,
  * and the object is the same
  * @author Erin Drummond
  */
-@EmbeddedMap
 public class NodeStatus implements INodeStatus {
 
 	private String uptime;
@@ -21,7 +18,10 @@ public class NodeStatus implements INodeStatus {
 	private String backendVersion;
 	private boolean backendRunning;
 	private boolean backendInstalled;
-	
+
+	public NodeStatus() {
+	};
+
 	public NodeStatus(INodeStatus ins) {
 		this.uptime = ins.getUptime();
 		this.freeSpaceBytes = ins.getFreeSpaceBytes();
