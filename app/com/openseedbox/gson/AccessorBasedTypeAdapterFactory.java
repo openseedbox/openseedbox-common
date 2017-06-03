@@ -13,11 +13,10 @@ import com.openseedbox.code.Util;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
 import play.Logger;
 
 public class AccessorBasedTypeAdapterFactory implements TypeAdapterFactory {
@@ -53,38 +52,49 @@ public class AccessorBasedTypeAdapterFactory implements TypeAdapterFactory {
 			this.requestedClass = requestedClass;
 		}
 
+		// TODO: use Java 8+ stream instead
+		private Map<String, Method> methodsAsFieldNameMap(Method[] methods) {
+			Map<String, Method> namedMethods = new HashMap<String, Method>();
+			for (Method method : methods) {
+				namedMethods.put(getJsonFieldName(method), method);
+			}
+			return namedMethods;
+		}
+
 		@SuppressWarnings("unchecked")
 		@Override
 		public void write(JsonWriter out, T value) throws IOException {
 			out.beginObject();	
-			List<Method> allMethods = new ArrayList<Method>();
-			
+			Map<String, Method> allMethods = new LinkedHashMap<String, Method>();
+
 			//methods of this class
-			allMethods.addAll(Arrays.asList(value.getClass().getMethods()));
+			allMethods.putAll(methodsAsFieldNameMap(value.getClass().getMethods()));
 			
 			//methods of this class's superclass
-			allMethods.addAll(Arrays.asList(value.getClass().getSuperclass().getMethods()));
+			allMethods.putAll(methodsAsFieldNameMap(value.getClass().getSuperclass().getMethods()));
 			
 			//methods of this class's interfaces
 			for (Class i : value.getClass().getInterfaces()) {
-				allMethods.addAll(Arrays.asList(i.getMethods()));
+				allMethods.putAll(methodsAsFieldNameMap(i.getMethods()));
 			}
 			
 			//methods of this class's superclass's interfaces
 			for (Class i : value.getClass().getSuperclass().getInterfaces()) {
-				allMethods.addAll(Arrays.asList(i.getMethods()));
+				allMethods.putAll(methodsAsFieldNameMap(i.getMethods()));
 			}			
 			
-			for (Method method : allMethods) {		
+			for (Map.Entry<String, Method> methodEntry : allMethods.entrySet()) {
+				Method method = methodEntry.getValue();
 				try {
 					String name = getJsonFieldName(method);
 					if (name == null) { continue; }
-					Object returnValue = method.invoke(value);
+					T returnValue = (T) method.invoke(value);
 					if (returnValue != null) {
 						TypeToken<?> token = TypeToken.get(returnValue.getClass());
 						TypeAdapter adapter = gson.getAdapter(token);
 						out.name(name);
 						adapter.write(out, returnValue);
+						Logger.trace("JSON write: methodClass: %s, method: %s, field name: %s, type: %s, value: %s", method.getDeclaringClass().getName(), method.getName(), name, returnValue.getClass().getName() , returnValue);
 					}
 				} catch (IllegalAccessException ex) {
 					throw new MessageException(Util.getStackTrace(ex));
