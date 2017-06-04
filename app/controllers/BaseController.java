@@ -1,6 +1,7 @@
 package controllers;
 
 import com.openseedbox.code.MessageException;
+import com.openseedbox.code.Util;
 import com.openseedbox.mvc.GenericResult;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,10 @@ public abstract class BaseController extends Controller {
 	
 	protected static void setGeneralErrorMessage(String message) {
 		flash.put("error", message);
+	}
+
+	protected static void setGeneralErrorMessage(Exception ex) {
+		setGeneralErrorMessage(Util.getStackTrace(ex));
 	}
 
 	protected static void setGeneralMessage(String message) {
@@ -68,7 +73,11 @@ public abstract class BaseController extends Controller {
 	protected static void resultError(String message) {
 		throw new GenericResult(message, true);
 	}
-	
+
+	protected static void resultError(Exception ex) {
+		resultError(Util.getStackTrace(ex));
+	}
+
 	protected static void write(String s) {
 		write(s, new Object[]{});
 	}
@@ -89,9 +98,9 @@ public abstract class BaseController extends Controller {
 	protected static void onException(Exception ex) throws Exception {
 		if (ex instanceof MessageException) {
 			if (!StringUtils.equals(params.get("ext"), "html")) {
-				resultError(ex.getMessage());
+				resultError(ex);
 			}
-			result(ex.getMessage());
+			result(Util.getStackTrace(ex));
 		} else {
 			if (Play.mode == Mode.DEV) {
 				ex.printStackTrace();
