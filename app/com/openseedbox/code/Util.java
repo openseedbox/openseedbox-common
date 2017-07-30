@@ -4,10 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.openseedbox.gson.AccessorBasedTypeAdapterFactory;
 import com.openseedbox.mvc.ISelectListItem;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+
+import java.io.*;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -223,18 +221,39 @@ public class Util {
 			};
 			Process p = r.exec(cmd);
 			p.waitFor();
-			BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			String line;
-			StringBuilder all = new StringBuilder();
-			while ((line = b.readLine()) != null) {
-				all.append(line);
-			}
-			return all.toString();
+			return inputStreamToString(p.getInputStream());
 		} catch (IOException ex) {
 			return ex.toString();
 		} catch (InterruptedException ex) {
 			return ex.toString();
 		}
+	}
+
+	public static Process processBuilderStart(String[] command) {
+		ProcessBuilder p = new ProcessBuilder(command)
+				.redirectErrorStream(true);
+		p.environment().put("PATH", "/bin:/usr/bin:/usr/local/bin");
+		p.environment().put("TERM", "xterm");
+		try {
+			return p.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static String inputStreamToString(InputStream inputStream) {
+		BufferedReader b = new BufferedReader(new InputStreamReader(inputStream));
+		String line;
+		StringBuilder all = new StringBuilder();
+		try {
+			while ((line = b.readLine()) != null) {
+				all.append(line);
+			}
+		} catch (IOException e) {
+			return e.toString();
+		}
+		return all.toString();
 	}
 
 	public static String getLastModifiedHeader(long unixTimestamp) {
