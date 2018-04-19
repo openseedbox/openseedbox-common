@@ -1,3 +1,4 @@
 # You can specialize this file for each language.
 # For example, for French create a messages.fr file
 #
+validation.certificate_string=Please enter a (list of) PEM certificate string with a '-----BEGIN CERTIFICATE-----' and a '-----END CERTIFICATE-----' block (separated by new line)

@@ -12,6 +12,10 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -254,6 +258,24 @@ public class Util {
 			return e.toString();
 		}
 		return all.toString();
+	}
+
+	public static Collection<? extends Certificate> inputStreamToCertificates(InputStream inputStream) throws CertificateException {
+		CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+		Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(inputStream);
+		if (certificates.isEmpty()) {
+			throw new IllegalArgumentException("expected non-empty set of trusted certificates");
+		}
+		return certificates;
+	}
+
+	public static Collection<? extends Certificate> stringToCertificates(String certificates) {
+		ByteArrayInputStream bytes = new ByteArrayInputStream(certificates.getBytes());
+		try {
+			return inputStreamToCertificates(bytes);
+		} catch (CertificateException e) {
+			throw new RuntimeException("Error creating certificates " + e.toString());
+		}
 	}
 
 	public static String getLastModifiedHeader(long unixTimestamp) {
