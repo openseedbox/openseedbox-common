@@ -1,4 +1,4 @@
 # openseedbox-common dependencies
 
 require:
-    - play [1.3.4,1.4[
+    - play [1.3.4,1.5[
