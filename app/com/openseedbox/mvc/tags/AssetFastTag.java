@@ -28,6 +28,11 @@ public class AssetFastTag extends FastTags {
 		if (!assetsPrefix.endsWith("/")) {
 			assetsPrefix += "/";
 		}
+		final String contextPathStr = "openseedbox.context.path";
+		final String contextPathProp = "${" + contextPathStr + "}";
+		if (assetsPrefix.startsWith(contextPathProp)) {
+			assetsPrefix = assetsPrefix.replace(contextPathProp, play.Play.configuration.getProperty(contextPathStr, ""));
+		}
 		if (url.startsWith("/")) {
 			url = url.substring(1);
 		}
