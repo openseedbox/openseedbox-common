@@ -8,3 +8,5 @@ precompiled/
 server.pid
 build.xml
 conf/application.conf
+/.gradle
+/build

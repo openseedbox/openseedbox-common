@@ -1,0 +1,68 @@
+plugins {
+  id 'java-library'
+  id 'maven-publish'
+}
+
+ext {
+  groupName = 'com.github.openseedbox'
+
+  java_build_level = 11
+  java_run_level = 7
+}
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      from components.java
+    }
+  }
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(java_build_level)
+  }
+}
+tasks.withType(JavaCompile).configureEach {
+  options.release = java_run_level
+}
+
+tasks.withType(Test).configureEach {
+    testLogging {
+      events "passed", "skipped", "failed", "standardOut", "standardError"
+    }
+    javaLauncher = javaToolchains.launcherFor {
+    languageVersion = JavaLanguageVersion.of(java_run_level)
+  }
+}
+
+test.onlyIf { project.hasProperty('ApplicationTestIsAlreadyDefined') }
+
+sourceSets {
+  main {
+    java {
+      srcDir "app"
+      exclude 'views/'
+    }
+  }
+  test {
+    java {srcDir "test"}
+  }
+}
+
+processResources {
+  from('conf') {into 'conf' exclude 'application.conf*'}
+  //from('app') {include 'play.plugins'}
+  from('app/views') {into 'views'}
+  from('public') {into 'public'}
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation('jakarta.servlet:jakarta.servlet-api:5.0.0') { transitive = false }
+  implementation('com.google.code.maven-play-plugin.org.playframework:play:1.4.5')
+  testImplementation('com.google.code.maven-play-plugin.org.playframework.modules.testrunner:play-testrunner:1.4.5')
+}
