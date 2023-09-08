@@ -11,22 +11,17 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import net.sf.oval.internal.util.ReflectionUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.ivy.util.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.StringUtils;
 import play.Play;
 import play.templates.JavaExtensions;
 
@@ -94,11 +89,6 @@ public class Util {
 	public static String formatDateTime(Date d) {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		return df.format(d);
-	}
-
-	public static String formatDateTime(DateTime d) {
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
-		return d.toString(dtf);
 	}
 
 	public static String formatMoney(BigDecimal bd) {

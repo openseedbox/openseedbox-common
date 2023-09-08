@@ -2,8 +2,10 @@ package com.openseedbox.code.ws;
 
 
 import com.openseedbox.code.Util;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import play.Logger;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
 import java.io.InputStream;
@@ -22,6 +24,8 @@ import java.util.*;
  * @url https://stackoverflow.com/a/24561444
  */
 public class CustomSSLContext {
+
+	private static final Logger logger = LoggerFactory.getLogger(CustomSSLContext.class);
 
 	public static SSLContext getSslContext(final List<Map.Entry<String, String>> uriWithCertificates) {
 		SSLContext sslContext;
@@ -51,12 +55,12 @@ public class CustomSSLContext {
 					X509Certificate[] chain = Util.stringToCertificates(entry.getValue()).toArray(new X509Certificate[0]);
 					certificatesByHosts.add(new HostX509CertificatesTuple(host, chain));
 				} catch (URISyntaxException e) {
-					Logger.warn("What's wrong with %s? %s", entry.getKey(), e);
+					logger.warn("What's wrong with {}}? %s", entry.getKey(), e);
 				}
 			}
 
 			Collection<? extends Certificate> certificates = Util.stringToCertificates(certificatesToAdd.toString());
-			Logger.info("Extracted %d certificates", certificates.size());
+			logger.info("Extracted {} certificates", certificates.size());
 
 			// Do the same with your trust store this time
 			// Adapt how you load the keystore to your needs

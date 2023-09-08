@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.PARAMETER})
-@Constraint(checkWith = IsWholeNumberCheck.class)
-public @interface IsWholeNumber {
-	String message() default IsWholeNumberCheck.msg;
+@Constraint(checkWith = IsTrimmedStringCheck.class)
+public @interface IsTrimmedString {
+    String message() default IsTrimmedStringCheck.msg;
 }

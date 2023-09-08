@@ -6,20 +6,23 @@ import com.openseedbox.mvc.GenericResult;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import play.Play;
 import play.Play.Mode;
 import play.mvc.Before;
 import play.mvc.Catch;
 import play.mvc.Controller;
 import play.mvc.Http;
+import play.mvc.results.Error;
+import play.mvc.results.Ok;
+import play.mvc.results.Result;
 import play.templates.Template;
 import play.templates.TemplateLoader;
 
 public abstract class BaseController extends Controller {
 	
 	@Before
-	public static void checkRequestSecure() {
+	public Result checkRequestSecure() {
 		//this is required so Play! knows if its in front of https-secured nginx or not
 		Http.Header secure = request.headers.get("x-forwarded-proto");
 		if (secure != null) {
@@ -27,29 +30,33 @@ public abstract class BaseController extends Controller {
 				request.secure = true;
 			}
 		}
-	}	
+		return null;
+	}
 	
-	protected static void setGeneralErrorMessage(String message) {
+	protected Result setGeneralErrorMessage(String message) {
 		flash.put("error", message);
+		return null;
 	}
 
-	protected static void setGeneralErrorMessage(Exception ex) {
-		setGeneralErrorMessage(Util.getStackTrace(ex));
+	protected Result setGeneralErrorMessage(Exception ex) {
+		return setGeneralErrorMessage(Util.getStackTrace(ex));
 	}
 
-	protected static void setGeneralMessage(String message) {
+	protected Result setGeneralMessage(String message) {
 		flash.put("message", message);
+		return null;
 	}
 	
-	protected static void setGeneralWarningMessage(String message) {
+	protected Result setGeneralWarningMessage(String message) {
 		flash.put("warning", message);
+		return null;
 	}
 
-	protected static String renderToString(String template) {
+	protected String renderToString(String template) {
 		return renderToString(template, new HashMap<String, Object>());
 	}
 
-	protected static String renderToString(String template, Map<String, Object> args) {
+	protected String renderToString(String template, Map<String, Object> args) {
 		Template t = TemplateLoader.load(template);
 		try {
 			if (args != null) {
@@ -61,46 +68,46 @@ public abstract class BaseController extends Controller {
 		}
 	}
 
-	protected static void result(Object o) {
-		throw new GenericResult(o);
+	protected Result result(Object o) {
+		return new GenericResult(o);
 	}
 
-	protected static void resultTemplate(String name) {
+	protected Result resultTemplate(String name) {
 		Template t = TemplateLoader.load(name);
-		throw new GenericResult(t.render());
+		return new GenericResult(t.render());
 	}
 
-	protected static void resultError(String message) {
-		throw new GenericResult(message, true);
+	protected Result resultError(String message) {
+		return new GenericResult(message, true);
 	}
 
-	protected static void resultError(Exception ex) {
-		resultError(Util.getStackTrace(ex));
+	protected Result resultError(Exception ex) {
+		return resultError(Util.getStackTrace(ex));
 	}
 
-	protected static void write(String s) {
+	protected void write(String s) {
 		write(s, new Object[]{});
 	}
 
-	protected static void write(String s, Object... args) {
+	protected void write(String s, Object... args) {
 		response.writeChunk(String.format(s, args));
 	}
 
-	protected static void writeLine(String s) {
+	protected void writeLine(String s) {
 		write(s + "<br />");
 	}
 
-	protected static void writeLine(String s, Object... args) {
+	protected void writeLine(String s, Object... args) {
 		write(s + "<br />", args);
 	}
 
 	@Catch(Exception.class)
-	protected static void onException(Exception ex) throws Exception {
+	protected Result onException(Exception ex) throws Exception {
 		if (ex instanceof MessageException) {
 			if (!Objects.equals(params.get("ext"), "html")) {
-				resultError(ex);
+				return resultError(ex);
 			}
-			result(Util.getStackTrace(ex));
+			return result(Util.getStackTrace(ex));
 		} else {
 			if (Play.mode == Mode.DEV) {
 				ex.printStackTrace();
@@ -109,5 +116,6 @@ public abstract class BaseController extends Controller {
 				//Mails.sendError(ex, request);
 			}			
 		}
+		return new Ok();
 	}
 }

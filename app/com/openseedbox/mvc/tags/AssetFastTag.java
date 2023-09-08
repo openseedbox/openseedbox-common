@@ -3,10 +3,10 @@ package com.openseedbox.mvc.tags;
 import groovy.lang.Closure;
 import java.io.PrintWriter;
 import java.util.Map;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import play.Play;
 import play.templates.FastTags;
-import play.templates.GroovyTemplate.ExecutableTemplate;
+import play.templates.ExecutableTemplate;
 
 @FastTags.Namespace("asset")
 public class AssetFastTag extends FastTags {

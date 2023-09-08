@@ -1,24 +1,15 @@
 package com.openseedbox.mvc.validation;
 
-import com.openseedbox.code.Util;
-import org.apache.commons.lang.StringUtils;
-import play.Logger;
-import play.data.validation.Check;
+import net.sf.oval.configuration.annotation.Constraint;
 
-public class IsCertificateOrBlankString extends Check {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-	@Override
-	public boolean isSatisfied(Object validatedObject, Object value) {
-		try {
-			String s = value.toString();
-			if (StringUtils.isEmpty(StringUtils.trimToEmpty(s))) {
-				return true;
-			}
-			Util.stringToCertificates(s);
-		} catch (Throwable t) {
-			this.setMessage("validation.certificate_string");
-			return false;
-		}
-		return true;
-	}
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Constraint(checkWith = IsCertificateOrBlankStringCheck.class)
+public @interface IsCertificateOrBlankString {
+	String message() default IsCertificateOrBlankStringCheck.msg;
 }

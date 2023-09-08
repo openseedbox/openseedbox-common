@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import play.mvc.Http.Request;
 import play.mvc.Http.Response;
+import play.mvc.Scope;
 import play.mvc.results.RenderJson;
 import play.mvc.results.RenderXml;
 import play.mvc.results.Result;
@@ -27,7 +28,7 @@ public class GenericResult extends Result {
 	}
 
 	@Override
-	public void apply(Request request, Response response) {
+	public void apply(Request request, Response response, Scope.Session session, Scope.RenderArgs renderArgs, Scope.Flash flash) {
 		String ext = request.params.get("ext");
 		if (ext == null) {
 			ext = "json";
@@ -49,20 +50,20 @@ public class GenericResult extends Result {
 		}
 		if (ext.equals("json")) {
 		
-			new RenderJson(getGson().toJson(_res)).apply(request, response);
+			new RenderJson(getGson().toJson(_res)).apply(request, response, session, renderArgs, flash);
 		} else if (ext.equals("xml")) {
-			new RenderXml(_res).apply(request, response);
+			new RenderXml(_res.toString()).apply(request, response, session, renderArgs, flash);
 		} else if (ext.equals("jsonp")) {
 			String callback = request.params.get("callback");
 			if (callback == null || callback.isEmpty()) {
 				callback = "callback";
 			}
 			response.print(String.format("%s(", callback));
-			new RenderJson(getGson().toJson(_res)).apply(request, response);
+			new RenderJson(getGson().toJson(_res)).apply(request, response, session, renderArgs, flash);
 			response.print(")");
 			response.contentType = "text/javascript";
 		} else if (ext.equals("html")) {
-			response.print(_res);
+			response.print(_res.toString());
 		} else {
 			response.print("Unknown response type: " + ext);
 		}

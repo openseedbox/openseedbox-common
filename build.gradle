@@ -7,7 +7,7 @@ ext {
   groupName = 'com.github.openseedbox'
 
   java_build_level = 11
-  java_run_level = 7
+  java_run_level = 11
 }
 
 publishing {
@@ -37,7 +37,7 @@ tasks.withType(Test).configureEach {
   }
 }
 
-test.onlyIf { project.hasProperty('ApplicationTestIsAlreadyDefined') }
+//test.onlyIf { project.hasProperty('ApplicationTestIsAlreadyDefined') }
 
 sourceSets {
   main {
@@ -63,7 +63,14 @@ repositories {
 }
 
 dependencies {
-  implementation('jakarta.servlet:jakarta.servlet-api:5.0.0') { transitive = false }
-  implementation('com.google.code.maven-play-plugin.org.playframework:play:1.4.5')
-  testImplementation('com.google.code.maven-play-plugin.org.playframework.modules.testrunner:play-testrunner:1.4.5')
+  implementation("com.codeborne.replay:framework:2.1.0")
+  implementation 'org.apache.commons:commons-lang3:3.12.0', {
+    because 'was unexposed in commit https://github.com/codeborne/replay/commit/b6ca6b95d246'
+  }
+  implementation('com.ning:async-http-client:1.9.40') {
+    exclude group: 'io.netty'
+  }
+
+  testImplementation('org.assertj:assertj-core:3.24.2')
+  testImplementation('junit:junit:4.13.2')
 }

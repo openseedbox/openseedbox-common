@@ -5,9 +5,10 @@ import com.openseedbox.backend.INodeStatus;
 import com.openseedbox.backend.NodeStatus;
 import com.openseedbox.gson.AccessorBasedTypeAdapterFactory;
 import org.junit.Test;
-import play.test.UnitTest;
 
-public class SerializationTest extends UnitTest {
+import static org.junit.Assert.*;
+
+public class SerializationTest {
 	
 	@Test
 	public void testAccessorBasedJsonSerialization() {
@@ -26,12 +27,12 @@ public class SerializationTest extends UnitTest {
 	public void testAccessorBasedJsonDeserialization() {		
 		String serialized = "{\"uptime\":\"uptime\",\"free-space-bytes\":1000,\"used-space-bytes\":1000,\"total-space-bytes\":2000,\"is-backend-installed\":false,\"base-directory\":\"baseDir\",\"is-base-directory-writable\":false,\"is-backend-running\":false}";
 		INodeStatus status = getGson().fromJson(serialized, NodeStatus.class);
-		assertTrue(status.getUptime().equals("uptime"));
-		assertTrue(status.getFreeSpaceBytes() == 1000);
-		assertTrue(status.getUsedSpaceBytes() == 1000);
-		assertTrue(status.getTotalSpaceBytes() == 2000);
-		assertTrue(status.getBaseDirectory().equals("baseDir"));
-		assertTrue(!status.isBaseDirectoryWritable());
+		assertEquals("uptime", status.getUptime());
+		assertEquals(1000, status.getFreeSpaceBytes());
+		assertEquals(1000, status.getUsedSpaceBytes());
+		assertEquals(2000, status.getTotalSpaceBytes());
+		assertEquals("baseDir", status.getBaseDirectory());
+		assertFalse(status.isBaseDirectoryWritable());
 	}	
 	
 	private Gson getGson() {

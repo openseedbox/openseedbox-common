@@ -17,9 +17,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import play.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AccessorBasedTypeAdapterFactory implements TypeAdapterFactory {
+	private static final Logger logger = LoggerFactory.getLogger(AccessorBasedTypeAdapterFactory.class);
 
 	public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> tt) {
 		Class<? super T> t = tt.getRawType();
@@ -94,11 +96,9 @@ public class AccessorBasedTypeAdapterFactory implements TypeAdapterFactory {
 						TypeAdapter adapter = gson.getAdapter(token);
 						out.name(name);
 						adapter.write(out, returnValue);
-						Logger.trace("JSON write: methodClass: %s, method: %s, field name: %s, type: %s, value: %s", method.getDeclaringClass().getName(), method.getName(), name, returnValue.getClass().getName() , returnValue);
+						logger.trace("JSON write: methodClass: {}, method: {}, field name: {}, type: {}, value: {}", method.getDeclaringClass().getName(), method.getName(), name, returnValue.getClass().getName() , returnValue);
 					}
-				} catch (IllegalAccessException ex) {
-					throw new MessageException(Util.getStackTrace(ex));
-				} catch (InvocationTargetException ex) {
+				} catch (IllegalAccessException | InvocationTargetException ex) {
 					throw new MessageException(Util.getStackTrace(ex));
 				}
 			}
@@ -141,7 +141,7 @@ public class AccessorBasedTypeAdapterFactory implements TypeAdapterFactory {
 							if (paramTypes.length > 0) {
 								//call the set method, passing in the value	
 								Class paramType = paramTypes[0];
-								setterMethod.invoke(o, gson.fromJson(in, paramType));
+								setterMethod.invoke(o, (Object) gson.fromJson(in, paramType));
 							}							
 						}						
 					}
@@ -155,7 +155,7 @@ public class AccessorBasedTypeAdapterFactory implements TypeAdapterFactory {
 			} catch (InvocationTargetException ex) {
 				throw new MessageException(Util.getStackTrace(ex));
 			} catch (JsonSyntaxException ex) {
-				Logger.error("Error while processing %s: %s", currentName, ex);
+				logger.error("Error while processing {}: {}", currentName, ex);
 			}
 			return null;
 		}

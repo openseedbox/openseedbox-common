@@ -1,24 +1,15 @@
 package com.openseedbox.mvc.validation;
 
-import java.math.BigDecimal;
-import org.apache.commons.lang.StringUtils;
-import play.data.validation.Check;
+import net.sf.oval.configuration.annotation.Constraint;
 
-public class IsDecimalNumber extends Check {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-	@Override
-	public boolean isSatisfied(Object validatedObject, Object value) {
-		try {
-			String num = value.toString();
-			if (!StringUtils.isEmpty(num)) {
-				BigDecimal d = new BigDecimal(num);
-			} else {
-				throw new Exception();
-			}
-		} catch (Exception ex) {
-			this.setMessage("validation.decimal_number");
-		}
-		return true;
-	}
-	
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Constraint(checkWith = IsDecimalNumberCheck.class)
+public @interface IsDecimalNumber {
+	String message() default IsDecimalNumberCheck.msg;
 }

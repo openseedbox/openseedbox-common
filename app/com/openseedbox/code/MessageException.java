@@ -1,20 +1,10 @@
 package com.openseedbox.code;
 
-import play.exceptions.PlayExceptionWithJavaSource;
+import play.exceptions.PlayException;
 
-public class MessageException extends PlayExceptionWithJavaSource {
+public class MessageException extends PlayException {
 	public MessageException(String message, Throwable t) {
 		super(message,t);
-	}
-
-	@Override
-	public String getErrorTitle() {
-		return getMessage();
-	}
-
-	@Override
-	public String getErrorDescription() {
-		return getCause().getMessage();
 	}
 
 	public MessageException(String message) {

@@ -1,6 +1,6 @@
 package com.openseedbox.mvc;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import play.templates.JavaExtensions;
 
 /**

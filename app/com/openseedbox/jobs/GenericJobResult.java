@@ -1,9 +1,9 @@
 package com.openseedbox.jobs;
 
-public class GenericJobResult {
+public class GenericJobResult<T> {
 
 	private Exception error;
-	private Object result;
+	private T result;
 
 	public void setError(Exception error) {
 		this.error = error;
@@ -17,11 +17,11 @@ public class GenericJobResult {
 		return error != null;
 	}
 	
-	public void setResult(Object o) {
+	public void setResult(T o) {
 		this.result = o;
 	}
 	
-	public Object getResult() {
+	public T getResult() {
 		return this.result;
 	}
 }

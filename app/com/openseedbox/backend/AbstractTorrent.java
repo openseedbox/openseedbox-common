@@ -1,6 +1,6 @@
 package com.openseedbox.backend;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * An Abstract implementation of the ITorrent interface with common implementations for

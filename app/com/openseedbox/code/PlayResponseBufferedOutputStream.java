@@ -2,7 +2,6 @@ package com.openseedbox.code;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import play.Logger;
 import play.mvc.Http.Response;
 
 /**
@@ -11,7 +10,7 @@ import play.mvc.Http.Response;
  * entire response in memory
  * @author Erin Drummond
  */
-public class PlayResponseBufferedOutputStream extends ByteArrayOutputStream {		
+public class PlayResponseBufferedOutputStream extends ByteArrayOutputStream {
 
 		private Response r;
 		private int bufferSize;
