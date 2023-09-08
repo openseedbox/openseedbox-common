@@ -19,6 +19,7 @@ publishing {
 }
 
 java {
+  withSourcesJar()
   toolchain {
     languageVersion = JavaLanguageVersion.of(java_build_level)
   }
