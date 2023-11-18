@@ -8,6 +8,9 @@ ext {
 
   java_build_level = 11
   java_run_level = 11
+
+  replay_version = '2.1.0'
+  replay_group = 'com.codeborne.replay'
 }
 
 publishing {
@@ -37,6 +40,33 @@ tasks.withType(Test).configureEach {
   }
 }
 
+tasks.register('precompileTemplates', JavaExec) {
+  javaLauncher = javaToolchains.launcherFor {
+    languageVersion = JavaLanguageVersion.of(java_run_level)
+  }.get()
+  jvmArgs '-Xmx128m'
+  mainClass = 'play.modules.gtengineplugin.PrecompileTemplates'
+  mainClass = 'play.templates.PrecompileTemplates'
+  classpath = files('precompiled/java') + sourceSets.main.runtimeClasspath + sourceSets.main.compileClasspath + fileTree(dir: file('lib/').path, include: '*.jar')
+  subprojects.each { p ->
+    classpath += p.sourceSets.main.runtimeClasspath
+  }
+
+  systemProperty 'file.encoding', 'UTF-8'
+
+  doLast {
+    copy {
+      from 'precompiled/java'
+      into sourceSets.main.output.classesDirs.asPath
+    }
+    delete 'precompiled'
+  }
+}
+
+tasks.withType(Jar).configureEach {
+  dependsOn precompileTemplates
+}
+
 //test.onlyIf { project.hasProperty('ApplicationTestIsAlreadyDefined') }
 
 sourceSets {
@@ -53,8 +83,8 @@ sourceSets {
 
 processResources {
   from('conf') {into 'conf' exclude 'application.conf*'}
-  //from('app') {include 'play.plugins'}
-  from('app/views') {into 'views'}
+  from('app') {include 'play.plugins'}
+  from('app/views') {into 'app/views'}
   from('public') {into 'public'}
 }
 
@@ -63,7 +93,9 @@ repositories {
 }
 
 dependencies {
-  implementation("com.codeborne.replay:framework:2.1.0")
+  implementation("${replay_group}:framework:${replay_version}")
+  implementation("${replay_group}:fastergt:${replay_version}")
+
   implementation 'org.apache.commons:commons-lang3:3.12.0', {
     because 'was unexposed in commit https://github.com/codeborne/replay/commit/b6ca6b95d246'
   }
