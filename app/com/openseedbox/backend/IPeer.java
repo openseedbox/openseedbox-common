@@ -52,5 +52,8 @@ public interface IPeer {
 	 * @return The rate we are uploading to this peer at (in bytes/sec)
 	 */
 	@SerializedAccessorName("upload-rate-bytes")
-	public long getUploadRateBytes();	
+	public long getUploadRateBytes();
+
+	@SerializedAccessorName("progress")
+	public double getProgress();
 }
