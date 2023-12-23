@@ -20,19 +20,7 @@ import play.templates.Template;
 import play.templates.TemplateLoader;
 
 public abstract class BaseController extends Controller {
-	
-	@Before
-	public Result checkRequestSecure() {
-		//this is required so Play! knows if its in front of https-secured nginx or not
-		Http.Header secure = request.headers.get("x-forwarded-proto");
-		if (secure != null) {
-			if (secure.value().toLowerCase().equals("https")) {
-				request.secure = true;
-			}
-		}
-		return null;
-	}
-	
+
 	protected Result setGeneralErrorMessage(String message) {
 		flash.put("error", message);
 		return null;

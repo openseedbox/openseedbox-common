@@ -9,8 +9,9 @@ ext {
   java_build_level = 11
   java_run_level = 11
 
-  replay_version = '2.1.0'
+  replay_version = 'PR-291-SNAPSHOT'
   replay_group = 'com.codeborne.replay'
+  replay_group = 'com.github.xabolcs.re-play1'
 }
 
 publishing {
@@ -27,8 +28,11 @@ java {
     languageVersion = JavaLanguageVersion.of(java_build_level)
   }
 }
-tasks.withType(JavaCompile).configureEach {
-  options.release = java_run_level
+
+if (java_build_level > 8) {
+  tasks.withType(JavaCompile).configureEach {
+    options.release = java_run_level
+  }
 }
 
 tasks.withType(Test).configureEach {
@@ -82,7 +86,7 @@ sourceSets {
 }
 
 processResources {
-  from('conf') {into 'conf' exclude 'application.conf*'}
+  from('conf') {into 'conf' /*exclude 'application.conf*'*/}
   from('app') {include 'play.plugins'}
   from('app/views') {into 'app/views'}
   from('public') {into 'public'}
@@ -90,6 +94,8 @@ processResources {
 
 repositories {
   mavenCentral()
+  mavenLocal()
+  maven { url 'https://jitpack.io' }
 }
 
 dependencies {

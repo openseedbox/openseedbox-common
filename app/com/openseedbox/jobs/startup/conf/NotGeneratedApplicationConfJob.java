@@ -8,8 +8,9 @@ import play.Play;
 import play.exceptions.ConfigurationException;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
-import play.vfs.VirtualFile;
+import play.libs.IO;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Properties;
 
@@ -46,7 +47,7 @@ public class NotGeneratedApplicationConfJob extends Job<Void> {
             if (fileName.isEmpty()) {
                 throw new ConfigurationException(String.format("NOT_GENERATED can only be used only with included configurations (see \"%s\" property)", INCLUDE_RUNTIME_CONF));
             }
-            VirtualFile runtimeFile = VirtualFile.open(Play.applicationPath).child("conf/" + fileName);
+            File runtimeFile = new File(Play.appRoot, "conf/" + fileName);
             if (runtimeFile.isDirectory()) {
                 throw new ConfigurationException(String.format("Included conf file %s is a directory (check \"%s\" property)", fileName, INCLUDE_RUNTIME_CONF));
             }
@@ -54,10 +55,10 @@ public class NotGeneratedApplicationConfJob extends Job<Void> {
             Properties runtimeProps = new Properties();
             if (runtimeFile.exists()) {
                 logger.trace("Loading runtime configuration from existing {}", runtimeFile.getName());
-                runtimeProps.load(runtimeFile.inputstream());
+                runtimeProps = IO.readUtf8Properties(runtimeFile);
             }
             runtimeProps.putAll(modifiedProps);
-            runtimeProps.store(new FileOutputStream(runtimeFile.getRealFile()), "");
+            runtimeProps.store(new FileOutputStream(runtimeFile), "");
             logger.debug("Saved generated properties to {}", runtimeFile.getName());
 
             Play.configuration.putAll(modifiedProps);
